@@ -14,6 +14,7 @@ services:
       - DB_USER=root
       - DB_PASSWORD=password
       - DB_NAME=myapp
+    # 기본적으로 docker-compose내의 컨테이너는 같은 네트워크 환경을 공유하지만, 명시적으로 써줌
     networks:
       - app-network
 
@@ -26,7 +27,9 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: myapp
     volumes:
+      # 컨테이너 종료되어도 데이터 유지를 위한 volume 선언
       - db-data:/var/lib/mysql
+      # 초기 테이블 셋업을 위해 선언
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app-network
@@ -35,5 +38,6 @@ networks:
   app-network:
     driver: bridge
 
+# db-data라는 volume 생성
 volumes:
   db-data:
